@@ -1,36 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>HTML Injection Example</title>
+    <title>Open and Inject</title>
 </head>
 <body>
-    <button onclick="injectIntoAboutBlank()">Inject HTML</button>
+
+    <button onclick="openAndInject()">Open about:blank and Inject Website</button>
 
     <script>
-        function injectIntoAboutBlank() {
-            let newWindow = window.open(); // Open a new about:blank window
-            let newDoc = newWindow.document;
+        function openAndInject() {
+            // Open a new about:blank tab
+            const newTab = window.open("about:blank", "_blank");
 
-            newDoc.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>Injected Page</title>
-                    <style>
-                        body { font-family: sans-serif; background-color: #f0f0f0; padding: 20px; }
-                        h1 { color: #333; }
-                        p { color: #666; }
-                    </style>
-                </head>
-                <body>
-                    <h1>Welcome to the Injected Page!</h1>
-                    <p>This is a demonstration of injecting HTML into an about:blank page using JavaScript.</p>
-                    <p>You can add any valid HTML content here.</p>
-                </body>
-                </html>
-            `);
-            newDoc.close();
+            // Check if the new tab was successfully opened
+            if (newTab) {
+                // Construct the HTML for the iframe
+                const iframeHtml = `
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Injected Content</title>
+                        <style>
+                            body { margin: 0; padding: 0; overflow: hidden; }
+                            iframe { border: none; width: 100vw; height: 100vh; }
+                        </style>
+                    </head>
+                    <body>
+                        <iframe src="terraria.mercurywork.shop"></iframe>
+                    </body>
+                    </html>
+                `;
+
+                // Write the HTML to the new tab's document
+                newTab.document.write(iframeHtml);
+                newTab.document.close(); // Important to close the document stream
+            } else {
+                alert("Pop-up blocked! Please allow pop-ups for this site.");
+            }
         }
     </script>
+
 </body>
 </html>
